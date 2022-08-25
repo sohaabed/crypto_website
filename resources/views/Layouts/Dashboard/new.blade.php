@@ -18,9 +18,6 @@
 
 @endsection
 
-@section('content')
-
-@endsection
 
 @section('Headtitle')
 
@@ -28,3 +25,6 @@
 
 
 
+@section('content')
+
+@endsection

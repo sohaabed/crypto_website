@@ -87,6 +87,12 @@
                                     <span class="hide-menu"> {{__('dashboard.roles')}} </span>
                                 </a>
                             </li>
+                            <li class="sidebar-item">
+                                <a href="{{url('roles/create')}}" class="sidebar-link">
+                                    <i class="icon-Record"></i>
+                                    <span class="hide-menu"> {{__('dashboard.addRoles')}} </span>
+                                </a>
+                            </li>
 
                         </ul>
                     </li>
@@ -119,6 +125,13 @@
                                 <a href="{{url('users')}}" class="sidebar-link">
                                     <i class="icon-Record"></i>
                                     <span class="hide-menu"> {{__('dashboard.user')}} </span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a href="{{url('users/create')}}" class="sidebar-link">
+                                    <i class="icon-Record"></i>
+                                    <span class="hide-menu"> {{__('dashboard.AddUser')}} </span>
                                 </a>
                             </li>
 

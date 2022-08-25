@@ -47,8 +47,8 @@
                             <td>{{$role->name}}</td>
                             <td>
                                 <a href="{{route('roles.edit' , $role)}}">
-                                    <button type="button" class="btn btn-success"><i
-                                            class="fas fa-edit"></i></button>
+                                    <button type="button" class="btn btn-success">
+                                        <i class="fas fa-edit"></i></button>
                                 </a>
                                 <form style="display: inline-block" method="Post" action="{{route('roles.destroy' , $role->id)}}">
                                 @csrf

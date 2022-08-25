@@ -15,6 +15,8 @@ return [
     'user' => 'Users',
     'roles' => 'Roles',
     'permissions' => 'Permission',
+    'addRoles' => 'Add Roles',
+    'AddUser' => 'Add User',
 
 
 

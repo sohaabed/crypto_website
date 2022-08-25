@@ -8,8 +8,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 //custom Spatie\Permission
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
@@ -20,12 +22,20 @@ class UserController extends Controller
     {
         if ($request->ajax()) {
             $data = User::whereNotIn('name', ['admin'])->get();
-            return Datatables::of($data)->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" class="btn btn-primary btn-sm">View</a>';
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('image', function ($artist) {
+                    $url = asset($artist->image);
+                    return '<img src="' . $url . '" border="0" width="40" align="center" class="rounded" />';
+                })
+                ->addColumn('action', function ($user) {
+                    $btn = '<a  href="' . route('users.showRoles', $user) . '" href="javascript:void(0)" class="btn btn-info btn-sm"><i class="fas fa-lock"></i></a>';
+                    $btn .= '<a href="' . route('users.show', $user) . '" href="javascript:void(0)" class="btn btn-success btn-sm"><i class="fas fa-eye"></i></a>';
+                    $btn .= '<a href="' . route('users.edit', $user) . '" href="javascript:void(0)" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>';
+                    $btn .= '<a href="' . route('users.destroy', $user) . '" href="javascript:void(0)" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>';
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['image', 'action'])
                 ->make(true);
         }
         return view('Layouts.Admin.users.index');
@@ -36,24 +46,37 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::pluck('name', 'name')->all();
-        return view('Layouts.Admin.users.create', compact('roles'));
+
+        return view('Layouts.Admin.users.create');
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'password' => 'required|min:8|same:confirm-password',
+            'file' => 'nullable|mimes:png,jpg,jpeg,gif',
         ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors());
+        }
+        if ($request->hasFile('file')) {
+            $logo = $request['file'];
+            $fileName = date('Y-m-d') . $logo->getClientOriginalName();
+            $pathImage = $request['file']->storeAs('users_image', $fileName, 'public');
+            $request['image'] = 'storage/' . $pathImage;
 
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
+        }
 
-        $user = User::create($input);
-        $user->assignRole($request->input('roles'));
+        $user = User::create(array_merge(
+            $validator->validated(),
+            [
+                'password' => bcrypt($request->password),
+                'image' => $request['image'],
+            ]
+        ));
 
         return redirect()->route('users.index')
             ->with('success', 'User created successfully');
@@ -67,42 +90,45 @@ class UserController extends Controller
 
     public function showRoles(User $user)
     {
-        $roles = Role::where('name','!=','admin')->get();
+        $roles = Role::where('name', '!=', 'admin')->get();
         $permissions = Permission::all();
         return view('Layouts.Admin.users.role',
             compact('user', 'roles', 'permissions'));
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::find($id);
-        $roles = Role::pluck('name', 'name')->all();
-        $userRole = $user->roles->pluck('name', 'name')->all();
-
-        return view('Layouts.Admin.users.edit', compact('user', 'roles', 'userRole'));
+        return view('Layouts.Admin.users.edit', compact('user'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required | email | unique:users,email,' . $id,
-            'password' => 'same:confirm - password',
-            'roles' => 'required'
+            'email' => 'required | email | unique:users,email,' . $user->id,
+            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'file' => 'nullable|mimes:png,jpg,jpeg,gif',
         ]);
 
         $input = $request->all();
         if (!empty($input['password'])) {
-            $input['password'] = Hash::make($input['password']);
+            $request->validate([
+                'password' => 'min:8|same:confirm-password',
+            ]);
+            $input['password'] = bcrypt($input['password']);
         } else {
-            $input = array_except($input, array('password'));
+            $input = Arr::except($input, array('password'));
+        }
+        if ($request->hasFile('file')) {
+            $logo = $input['file'];
+            $fileName = date('Y-m-d') . $logo->getClientOriginalName();
+            $pathImage = $input['file']->storeAs('users_image', $fileName, 'public');
+            $input['image'] = 'storage/' . $pathImage;
+
         }
 
-        $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
 
-        $user->assignRole($request->input('roles'));
 
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully');
