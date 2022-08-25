@@ -32,7 +32,18 @@ class UserController extends Controller
                     $btn = '<a  href="' . route('users.showRoles', $user) . '" href="javascript:void(0)" class="btn btn-info btn-sm"><i class="fas fa-lock"></i></a>';
                     $btn .= '<a href="' . route('users.show', $user) . '" href="javascript:void(0)" class="btn btn-success btn-sm"><i class="fas fa-eye"></i></a>';
                     $btn .= '<a href="' . route('users.edit', $user) . '" href="javascript:void(0)" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>';
-                    $btn .= '<a href="' . route('users.destroy', $user) . '" href="javascript:void(0)" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>';
+                    $btn .= '
+                    <form style="display:inline" action="'. route('users.destroy', $user->id) . '" method="POST">
+                    ' . csrf_field() . '
+                    ' . method_field("DELETE") . '
+
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Are You Sure Want to Delete?\')">
+                      <i class="fas fa-trash-alt"></i>
+                       </button>
+                   </form>
+                ';
+
+
                     return $btn;
                 })
                 ->rawColumns(['image', 'action'])
@@ -69,6 +80,7 @@ class UserController extends Controller
             $request['image'] = 'storage/' . $pathImage;
 
         }
+
 
         $user = User::create(array_merge(
             $validator->validated(),
@@ -139,7 +151,7 @@ class UserController extends Controller
         if ($user->hasRole('admin')) {
             return back()->with('message', 'you are admin.');
         }
-        $user->delete();
+        User::destroy($user->id);
 
         return back()->with('message', 'User deleted.');
 
