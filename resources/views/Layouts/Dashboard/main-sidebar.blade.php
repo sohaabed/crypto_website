@@ -139,6 +139,31 @@
                     </li>
                 @endif
 
+                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['admin','owner']))
+                    <li class="sidebar-item">
+                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                           aria-expanded="false">
+                            <i class="icon-Car-Wheel"></i>
+                            <span class="hide-menu">{{__('dashboard.Restaurants')}}</span>
+                        </a>
+                        <ul aria-expanded="false" class="collapse  first-level">
+                            <li class="sidebar-item">
+                                <a href="{{url('restaurants')}}" class="sidebar-link">
+                                    <i class="icon-Record"></i>
+                                    <span class="hide-menu"> {{__('dashboard.Restaurants')}} </span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a href="{{route('restaurants.create')}}" class="sidebar-link">
+                                    <i class="icon-Record"></i>
+                                    <span class="hide-menu"> {{__('dashboard.AddRestaurant')}} </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                @endif
                 <li class="sidebar-item">
 
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false"

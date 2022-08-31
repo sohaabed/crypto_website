@@ -43,4 +43,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'role:admin|owner']], function () {
+    Route::resource('/restaurants', RestaurantController::class);
+    Route::get('/restaurants/{restaurant}/products', [RestaurantController::class , 'showProducts'])->name('restaurants.showProduct');
+    Route::get('/restaurants/{restaurant}/users', [RestaurantController::class , 'showOwner'])->name('restaurants.showOwner');
+    Route::resource('/restaurants', RestaurantController::class);
+
 });

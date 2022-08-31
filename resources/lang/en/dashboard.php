@@ -17,6 +17,11 @@ return [
     'permissions' => 'Permission',
     'addRoles' => 'Add Roles',
     'AddUser' => 'Add User',
+    'Restaurants' => 'Restaurants',
+    'restaurant' => 'Restaurant',
+    'AddRestaurant' => 'Add Restaurant',
+    'ShowRestaurant' => 'Show Restaurant',
+    'EditRestaurant' => 'Edit Restaurant',
 
 
 

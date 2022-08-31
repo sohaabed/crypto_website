@@ -13,8 +13,10 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "3.2",
         "laravelcollective/html": "^6.3",
+        "psr/simple-cache": "1.0",
         "spatie/laravel-permission": "^5.5",
-        "yajra/laravel-datatables-oracle": "*"
+        "yajra/laravel-datatables-oracle": "*",
+        "yajra/laravel-datatables-buttons": "9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -23,6 +25,7 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
         "phpunit/phpunit": "^9.5.10"
+
     },
     "autoload": {
         "psr-4": {

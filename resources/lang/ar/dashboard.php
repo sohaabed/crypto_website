@@ -14,8 +14,12 @@ return [
     'viewProfile' => 'عرض الملف الشخصي',
     'user' => 'المستخدمين',
     'AddUser' => 'اضافة مستخدمين',
-    'roles' => 'احكام المستخدمين',
+    'roles' => 'ادوار المستخدمين',
     'permissions' => 'صلاحيات المستخدمين',
-    'addRoles' => 'اضافة حكم ',
-
+    'addRoles' => 'اضافة دور ',
+    'Restaurants' => 'المطاعم',
+    'AddRestaurant' => 'اضافة مطعم',
+    'restaurant' => 'مطعم',
+    'ShowRestaurant' => 'عرض مطعم',
+    'EditRestaurant' => 'تعديل مطعم',
 ];
