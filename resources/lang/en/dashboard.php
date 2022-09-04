@@ -22,7 +22,12 @@ return [
     'AddRestaurant' => 'Add Restaurant',
     'ShowRestaurant' => 'Show Restaurant',
     'EditRestaurant' => 'Edit Restaurant',
-
+    'Categories' => 'Categories',
+    'AddCategory' => 'Add Category',
+    'SubCategories' => 'SubCategories',
+    'AddSubCategory' => 'Add SubCategory',
+    'Products' => 'Products',
+    'AddProduct' => 'Add Product',
 
 
 ];

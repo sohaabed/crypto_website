@@ -81,16 +81,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <h5>Owner<span class="text-danger">*</span> <small>Open this select menu</small></h5>
-                            <div class=" controls col-12">
-                                <select required class="form-control form-select-lg mb-3" aria-label=".form-select-lg example" id="owner_id" name="owner_id">
-                                    @foreach($allUsers as $user)
-                                        <option value="{{$user->id}}">{{$user->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <h5>Category<span class="text-danger">*</span></h5>
                             <div class=" controls col-12">
                                 @foreach($allCategory as $category)

@@ -11,6 +11,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -19,7 +20,16 @@ class RestaurantController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Restaurant::all();
+
+            if (Session::exists('Category_Restaurant')) {
+                $data = Session::get('Category_Restaurant');
+
+
+            } else {
+
+                $data = Restaurant::all();
+            }
+            Session::forget('Category_Restaurant');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('logo', function ($rest) {
@@ -121,7 +131,6 @@ class RestaurantController extends Controller
 
     }
 
-
     public function show(Restaurant $restaurant)
     {
         $category = Restaurant_Category::where('restaurant_id', $restaurant->id)->pluck('category_id');
@@ -130,12 +139,16 @@ class RestaurantController extends Controller
         return view('Layouts.Layout.Restaurant.show', compact('restaurant'))->with('allCategory', $allCategory);
     }
 
-    public function edit(Restaurant $restaurant){
+    public function edit(Restaurant $restaurant)
+    {
         $allUsers = User::whereNotIn('name', ['admin'])->select('id', 'name')->get();
-        $allCategory = Category::select('id', 'title', 'description')->get();
-        return view('Layouts.Layout.Restaurant.edit')->with(compact('allCategory', 'allUsers','restaurant'));
+        $Rest_Category = Restaurant_Category::where('restaurant_id', $restaurant->id)->pluck('category_id');
+        $allCategory = Category::whereNotIn('id', $Rest_Category)->select('id', 'title', 'description')->get();
+
+        return view('Layouts.Layout.Restaurant.edit')->with(compact('allCategory', 'allUsers', 'restaurant', 'Rest_Category'));
 
     }
+
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -152,7 +165,7 @@ class RestaurantController extends Controller
             'owner_id' => 'required|exists:users,id',
         ]);
         if ($validator->fails()) {
-            return $this->apiResponse($validator->errors(), "fails", 422);
+            return back()->withErrors($validator->errors());
         }
         $rest = Restaurant::find($id);
         if ($rest) {
@@ -189,7 +202,6 @@ class RestaurantController extends Controller
 
     }
 
-
     public function destroy($id)
     {
 
@@ -201,14 +213,16 @@ class RestaurantController extends Controller
 
     public function showProducts(Restaurant $restaurant)
     {
-        $product = Product::where('restaurant_id',$restaurant->id)->get();
+        $product = Product::where('restaurant_id', $restaurant->id)->get();
         return view('Layouts.Layout.Product.index', compact('product'));
 
     }
 
     public function showOwner(Restaurant $restaurant)
     {
-           $user = User::find($restaurant->owner_id);
+        $user = User::find($restaurant->owner_id);
         return view('Layouts.Admin.users.show', compact('user'));
     }
+
+
 }

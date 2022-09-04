@@ -58,7 +58,7 @@
 @endsection
 
 @section('content')
-
+    <div class="container">
     <div class="row">
         <div class="col-6 pb-2">
             <a href="{{url('restaurants/create')}}">
@@ -66,12 +66,10 @@
             </a>
         </div>
         <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="alt_pagination"
-                               class="table  table-striped table-bordered display display restaurants_datatable"
-                               style="width:100%">
+
+                        <table
+                               class="table table-bordered restaurants_datatable"
+                               >
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -92,11 +90,9 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-        </div>
 
-
+    </div>
+    </div>
 
 
 @endsection

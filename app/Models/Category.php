@@ -11,6 +11,11 @@ class Category extends Model
     use SoftDeletes;
     use HasFactory;
     protected $table = 'categories';
+    protected $fillable =[
+        'title',
+        'description',
+        'active',
+    ];
     public function restaurants()
     {
         return $this->belongsToMany(Restaurant::class);

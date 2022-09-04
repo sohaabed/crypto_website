@@ -22,4 +22,10 @@ return [
     'restaurant' => 'مطعم',
     'ShowRestaurant' => 'عرض مطعم',
     'EditRestaurant' => 'تعديل مطعم',
+    'Categories' => 'التصنيفات',
+    'AddCategory' => 'إضافة تصنيف',
+    'SubCategories' => 'تصنيف فرعي',
+    'AddSubCategory' => 'إضافة تصنيف فرعي',
+    'Products' => 'المنتجات',
+    'AddProduct' => 'إضافة منتج',
 ];

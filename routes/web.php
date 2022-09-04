@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Web\Dashboard\CategoryController;
 use App\Http\Controllers\Web\Dashboard\LocalizationController;
+use App\Http\Controllers\Web\Dashboard\ProductController;
 use App\Http\Controllers\Web\Dashboard\RestaurantController;
+use App\Http\Controllers\Web\Dashboard\SubCategoryController;
 use App\Http\Controllers\Web\UserManagement\PermissionController;
 use App\Http\Controllers\Web\UserManagement\RoleController;
 use App\Http\Controllers\Web\UserManagement\UserController;
@@ -25,6 +28,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
     Route::post('lang', [LocalizationController::class, 'setLang']);
+    Route::get('/admin/impersonateBack', [UserController::class, 'impersonate_back'])->name('impersonate_back');
+
 });
 
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
@@ -40,12 +45,19 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::delete('/users/{user}/roles/{role}', [UserController::class, 'removeRole'])->name('users.roles.remove');
     Route::post('/users/{user}/permissions', [UserController::class, 'givePermission'])->name('users.permissions');
     Route::delete('/users/{user}/permissions/{permission}', [UserController::class, 'revokePermission'])->name('users.permissions.revoke');
+
+
+    Route::get('/admin/{user}/impersonate', [UserController::class, 'impersonate'])->name('impersonate');
 });
 
 Route::group(['middleware' => ['auth', 'role:admin|owner']], function () {
     Route::resource('/restaurants', RestaurantController::class);
     Route::get('/restaurants/{restaurant}/products', [RestaurantController::class , 'showProducts'])->name('restaurants.showProduct');
     Route::get('/restaurants/{restaurant}/users', [RestaurantController::class , 'showOwner'])->name('restaurants.showOwner');
-    Route::resource('/restaurants', RestaurantController::class);
+    Route::resource('/products', ProductController::class);
+    Route::resource('/categories', CategoryController::class);
+    Route::get('/categories/{category}/products', [CategoryController::class , 'showProducts'])->name('categories.showProducts');
+    Route::get('/categories/{category}/restaurants', [CategoryController::class , 'showRestaurants'])->name('categories.showRestaurants');
 
+    Route::resource('/subcategories', SubCategoryController::class);
 });
