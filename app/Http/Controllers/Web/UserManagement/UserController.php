@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 
 //custom Spatie\Permission
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -29,11 +31,12 @@ class UserController extends Controller
                     return '<img src="' . $url . '" border="0" width="40" align="center" class="rounded" />';
                 })
                 ->addColumn('action', function ($user) {
-                    $btn = '<a  href="' . route('users.showRoles', $user) . '" href="javascript:void(0)" class="btn btn-info btn-sm"><i class="fas fa-lock"></i></a>';
+                    $btn = '<a href="' . route('impersonate', $user->id) . '" href="javascript:void(0)" class="btn btn-info btn-sm">impersonate</a>';
+                    $btn .= '<a href="' . route('users.showRoles', $user) . '" href="javascript:void(0)" class="btn btn-info btn-sm"><i class="fas fa-lock"></i></a>';
                     $btn .= '<a href="' . route('users.show', $user) . '" href="javascript:void(0)" class="btn btn-success btn-sm"><i class="fas fa-eye"></i></a>';
                     $btn .= '<a href="' . route('users.edit', $user) . '" href="javascript:void(0)" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>';
                     $btn .= '
-                    <form style="display:inline" action="'. route('users.destroy', $user->id) . '" method="POST">
+                    <form style="display:inline" action="' . route('users.destroy', $user->id) . '" method="POST">
                     ' . csrf_field() . '
                     ' . method_field("DELETE") . '
                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Are You Sure Want to Delete?\')">
@@ -194,5 +197,23 @@ class UserController extends Controller
         return back()->with('message', 'Permission Not Exists.');
 
 
+    }
+
+    public function impersonate($id)
+    {
+
+        Session::put(['impersonate' => $id, 'admin' => Auth::id()]);
+        Auth::loginUsingId($id);
+
+        return redirect()->route('home');
+    }
+
+
+    public function impersonate_back()
+    {
+        Auth::logout();
+        Auth::loginUsingId(Session::get('admin'));
+        Session::forget('impersonate');
+        return redirect()->route('home');
     }
 }

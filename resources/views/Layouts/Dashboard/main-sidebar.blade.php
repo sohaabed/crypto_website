@@ -57,23 +57,42 @@
                     <!-- End User Profile-->
                 </li>
 
-{{--                <li class="sidebar-item">--}}
-{{--                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"--}}
-{{--                       aria-expanded="false">--}}
-{{--                        <i class="icon-Car-Wheel"></i>--}}
-{{--                        <span class="hide-menu">{{__('dashboard.Category')}}</span>--}}
-{{--                    </a>--}}
-{{--                    <ul aria-expanded="false" class="collapse  first-level">--}}
-{{--                        <li class="sidebar-item">--}}
-{{--                            <a href="{{url('categories')}}" class="sidebar-link">--}}
-{{--                                <i class="icon-Record"></i>--}}
-{{--                                <span class="hide-menu"> {{__('dashboard.ShowCategory')}} </span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </li>--}}
+                {{--                <li class="sidebar-item">--}}
+                {{--                    <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"--}}
+                {{--                       aria-expanded="false">--}}
+                {{--                        <i class="icon-Car-Wheel"></i>--}}
+                {{--                        <span class="hide-menu">{{__('dashboard.Category')}}</span>--}}
+                {{--                    </a>--}}
+                {{--                    <ul aria-expanded="false" class="collapse  first-level">--}}
+                {{--                        <li class="sidebar-item">--}}
+                {{--                            <a href="{{url('categories')}}" class="sidebar-link">--}}
+                {{--                                <i class="icon-Record"></i>--}}
+                {{--                                <span class="hide-menu"> {{__('dashboard.ShowCategory')}} </span>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                    </ul>--}}
+                {{--                </li>--}}
+                @if(\Illuminate\Support\Facades\Session::has('impersonate'))
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false"
+                           href="{{ route('impersonate_back') }}">
+                            <i class="mdi mdi-directions"></i>
+                            <span class="hide-menu">Add User Task </span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false"
+                           href="{{ route('impersonate_back') }}">
+                            <i class="mdi mdi-directions"></i>
+                            <span class="hide-menu">Back to Admin</span>
+                        </a>
+                    </li>
+                @endif()
 
-                @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
+
+
+            @if(\Illuminate\Support\Facades\Auth::user()->hasRole('admin'))
+
                     <li class="sidebar-item">
                         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
                            aria-expanded="false">
@@ -144,6 +163,52 @@
                         <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
                            aria-expanded="false">
                             <i class="icon-Car-Wheel"></i>
+                            <span class="hide-menu">{{__('dashboard.Categories')}}</span>
+                        </a>
+                        <ul aria-expanded="false" class="collapse  first-level">
+                            <li class="sidebar-item">
+                                <a href="{{url('categories')}}" class="sidebar-link">
+                                    <i class="icon-Record"></i>
+                                    <span class="hide-menu"> {{__('dashboard.Categories')}} </span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a href="{{route('categories.create')}}" class="sidebar-link">
+                                    <i class="icon-Record"></i>
+                                    <span class="hide-menu"> {{__('dashboard.AddCategory')}} </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                           aria-expanded="false">
+                            <i class="icon-Car-Wheel"></i>
+                            <span class="hide-menu">{{__('dashboard.SubCategories')}}</span>
+                        </a>
+                        <ul aria-expanded="false" class="collapse  first-level">
+                            <li class="sidebar-item">
+                                <a href="{{url('subcategories')}}" class="sidebar-link">
+                                    <i class="icon-Record"></i>
+                                    <span class="hide-menu"> {{__('dashboard.SubCategories')}} </span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a href="{{route('subcategories.create')}}" class="sidebar-link">
+                                    <i class="icon-Record"></i>
+                                    <span class="hide-menu"> {{__('dashboard.AddSubCategory')}} </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                           aria-expanded="false">
+                            <i class="icon-Car-Wheel"></i>
                             <span class="hide-menu">{{__('dashboard.Restaurants')}}</span>
                         </a>
                         <ul aria-expanded="false" class="collapse  first-level">
@@ -163,7 +228,32 @@
 
                         </ul>
                     </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                           aria-expanded="false">
+                            <i class="icon-Car-Wheel"></i>
+                            <span class="hide-menu">{{__('dashboard.Products')}}</span>
+                        </a>
+                        <ul aria-expanded="false" class="collapse  first-level">
+                            <li class="sidebar-item">
+                                <a href="{{url('products')}}" class="sidebar-link">
+                                    <i class="icon-Record"></i>
+                                    <span class="hide-menu"> {{__('dashboard.Products')}} </span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a href="{{route('products.create')}}" class="sidebar-link">
+                                    <i class="icon-Record"></i>
+                                    <span class="hide-menu"> {{__('dashboard.AddProduct')}} </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
                 @endif
+
+
                 <li class="sidebar-item">
 
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" aria-expanded="false"
