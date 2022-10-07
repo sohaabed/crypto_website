@@ -36,15 +36,26 @@ class UserController extends Controller
                     $btn .= '<a href="' . route('users.show', $user) . '" href="javascript:void(0)" class="btn btn-success btn-sm"><i class="fas fa-eye"></i></a>';
                     $btn .= '<a href="' . route('users.edit', $user) . '" href="javascript:void(0)" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>';
                     $btn .= '
+<<<<<<< HEAD
                     <form style="display:inline" action="' . route('users.destroy', $user->id) . '" method="POST">
                     ' . csrf_field() . '
                     ' . method_field("DELETE") . '
+=======
+                    <form style="display:inline" action="'. route('users.destroy', $user->id) . '" method="POST">
+                    ' . csrf_field() . '
+                    ' . method_field("DELETE") . '
+
+>>>>>>> b354ffa80d96583202123dcfd46d21356f992045
                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Are You Sure Want to Delete?\')">
                       <i class="fas fa-trash-alt"></i>
                        </button>
                    </form>
                 ';
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> b354ffa80d96583202123dcfd46d21356f992045
                     return $btn;
                 })
                 ->rawColumns(['image', 'action'])
@@ -80,6 +91,7 @@ class UserController extends Controller
             $pathImage = $request['file']->storeAs('users_image', $fileName, 'public');
             $request['image'] = 'storage/' . $pathImage;
         }
+
 
         $user = User::create(array_merge(
             $validator->validated(),
@@ -150,7 +162,10 @@ class UserController extends Controller
             return back()->with('message', 'you are admin.');
         }
         User::destroy($user->id);
+<<<<<<< HEAD
 
+=======
+>>>>>>> b354ffa80d96583202123dcfd46d21356f992045
 
         return back()->with('message', 'User deleted.');
 
