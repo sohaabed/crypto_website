@@ -22,14 +22,16 @@ class UserController extends Controller
     {
         if ($request->ajax()) {
             $data = User::whereNotIn('name', ['admin'])->get();
+            
             return Datatables::of($data)
                 ->addIndexColumn()
+              
                 ->addColumn('image', function ($artist) {
                     $url = asset($artist->image);
                     return '<img src="' . $url . '" border="0" width="40" align="center" class="rounded" />';
                 })
                 ->addColumn('action', function ($user) {
-                    $btn = '<a  href="' . route('users.showRoles', $user) . '" href="javascript:void(0)" class="btn btn-info btn-sm"><i class="fas fa-lock"></i></a>';
+                    $btn = '<a  href="' . route('users.showRoles', $user) . '" href="javascript:void(0)" class="btn btn-info btn-sm" alt="show roles"><i class="fas fa-lock"></i></a>';
                     $btn .= '<a href="' . route('users.show', $user) . '" href="javascript:void(0)" class="btn btn-success btn-sm"><i class="fas fa-eye"></i></a>';
                     $btn .= '<a href="' . route('users.edit', $user) . '" href="javascript:void(0)" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>';
                     $btn .= '
@@ -47,7 +49,11 @@ class UserController extends Controller
                     return $btn;
                 })
                 ->rawColumns(['image', 'action'])
-                ->make(true);
+                ->make(true)
+                ->buttons(
+                    Button::make('Exel')
+                );
+                return view('Layouts.Admin.users.index');
         }
         return view('Layouts.Admin.users.index');
 //        $data = User::whereNotIn('name', ['admin'])->get();
